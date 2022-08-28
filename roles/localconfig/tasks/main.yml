@@ -1,0 +1,68 @@
+---
+- name: Get current account's username.
+  shell: whoami
+  register: homebrew_whoami
+  changed_when: false
+  check_mode: no
+
+# Clone dotfiles
+- name: Clone the dotfiles directory.
+  git:
+    repo: "{{ dotfiles_repo }}"
+    version: "{{ dotfiles_branch }}"
+    dest: "/Users/{{ homebrew_whoami.stdout }}/mac-ansible/dotfiles"
+    update: yes
+    accept_hostkey: yes
+    depth: 1
+
+- name: Run the dotfiles bootstrap.sh
+  command: "/Users/{{ homebrew_whoami.stdout }}/mac-ansible/dotfiles/bootstrap.sh -f"
+
+- name: Install Pip Libraries
+  pip:
+    name: "{{ pip_items }}"
+    executable: pip3
+    extra_args: "--ignore-installed"
+
+- name: Install Ruby Gems
+  gem:
+    name: "{{ item }}"
+  with_items: "{{ gem_items }}"
+
+- name: Install Node Packages
+  npm:
+    name: "{{ item }}"
+    global: yes
+  with_items: "{{ npm_items }}"
+
+- name: Remove all crap from Dock
+  shell: dockutil --remove '{{ item }}'
+  ignore_errors: true
+  with_items: "{{ dockitems_to_remove }}"
+
+- name: Check if items in dock exist
+  shell: dockutil --find '{{ item.name }}' || dockutil --add '{{ item.path }}'
+  with_items: "{{ dockitems_to_persist }}"
+
+- name: Fix order
+  shell: dockutil --move '{{ item.name }}' --position {{ item.pos }}
+  with_items: "{{ dockitems_to_persist }}"
+
+- name: Hide the Dock
+  shell: defaults write com.apple.dock autohide -bool true
+
+- name: Resize the Dock
+  shell: defaults write com.apple.dock tilesize -int 50
+
+- name: Update Homebrew
+  shell: brew upgrade
+
+- name: Update Homebrew Cask
+  shell: brew cask upgrade
+
+- name: Set Wallpaper
+  shell: osascript -e 'tell application "Finder" to set desktop picture to POSIX file "/Users/{{ homebrew_whoami.stdout }}/Documents/wallpaper/{{ wallpaper_file }}"'
+  when: wallpaper_file is defined
+
+- name: Restart the Dock
+  shell: killall Dock

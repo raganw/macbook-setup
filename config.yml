@@ -1,0 +1,14 @@
+homebrew_taps:
+  - homebrew/core
+  - homebrew/cask
+
+homebrew_installed_packages:
+  - python3
+  - dockutil
+  - gpg
+  - pinentry-mac
+
+homebrew_cask_apps:
+  - alfred
+  - iterm2
+  - 1password
