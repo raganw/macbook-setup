@@ -10,6 +10,8 @@
         dest: "{{ansible_env.HOME}}/Developer/macbook-setup"
         clone: yes
         update: yes
+      tags: install, update
+
     - name: Update homebrew 
       community.general.homebrew:
         state: latest
