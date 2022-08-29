@@ -43,8 +43,6 @@ function install() {
 
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-      brew update --force --quiet
-      chmod -R go-w "$(brew --prefix)/share/zsh"
     else
         echo "${YELLOW}${BOLD}You already have Homebrew installed...${NORMAL}"
     fi
@@ -57,6 +55,9 @@ function install() {
       fi
     fi
 
+    brew update --force --quiet
+    chmod -R go-w "$(brew --prefix)/share/zsh"
+
     if ! command -v ansible $>/dev/null; then
         echo "${BLUE}Installing Ansible...${NORMAL}"
 
@@ -67,7 +68,7 @@ function install() {
     fi
 
     echo "${BLUE}Running ansible-pull on remote playbook in verbose mode.${NORMAL}"
-    ansible-pull --verbose --url https://github.com/raganw/macbook-setup.git
+    ansible-pull --ask-become-pass --verbose --url https://github.com/raganw/macbook-setup.git
 }
 
 function initialize() {
