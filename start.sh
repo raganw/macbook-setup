@@ -24,15 +24,18 @@ function install() {
     echo "${BLUE}Installing xcode command line tools...${NORMAL}"
     xcode-select --install
 
-    echo "${BLUE}${BOLD}Enter password for sudo access to add user to 'wheel' group${NORMAL}"
-    if [ "$(sudo dseditgroup -o read wheel 2>/dev/null)" ]
-    then
-        printf "%s\n" "Adding user to wheel group..."
-        sudo dseditgroup -o edit -a username -t "$(whoami)" wheel
-        sudo -k
-    else
-        printf "%s\n" "ERROR: No wheel group found. Exiting." >&2
-        exit 1
+    # check if user is member of wheel group
+    if [ $(id -Gn | grep -c 'wheel') -eq 0 ]; then
+      echo "${BLUE}${BOLD}Enter password for sudo access to add user to 'wheel' group${NORMAL}"
+      if [ "$(sudo dseditgroup -o read wheel 2>/dev/null)" ]
+      then
+          printf "%s\n" "Adding user to wheel group..."
+          sudo dseditgroup -o edit -a username -t "$(whoami)" wheel
+          sudo -k
+      else
+          printf "%s\n" "ERROR: No wheel group found. Exiting." >&2
+          exit 1
+      fi
     fi
 
     if ! command -v brew &>/dev/null; then
