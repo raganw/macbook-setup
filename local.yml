@@ -7,7 +7,7 @@
     - name: Clone ansible playbook repo
       git:
         repo: https://github.com/raganw/macbook-setup.git
-        dest: "{{ansible_env.HOME}}/Developer/mackbook-setup"
+        dest: "{{ansible_env.HOME}}/Developer/macbook-setup"
         clone: yes
         update: yes
     - name: Update homebrew 
