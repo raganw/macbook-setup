@@ -32,16 +32,16 @@ function install() {
       brew update --force --quiet
       chmod -R go-w "$(brew --prefix)/share/zsh"
     else
-        pretty_print "You already have Homebrew installed..."
+        echo "${YELLOW}${BOLD}You already have Homebrew installed...${NORMAL}"
     fi
 
     if ! command -v ansible $>/dev/null; then
-        pretty_print "Installing Ansible..."
+        echo "${BLUE}Installing Ansible...${NORMAL}"
 
         brew install ansible
 
     else
-        pretty_print "You already have Ansible installed..."
+        echo "${YELLOW}${BOLD}You already have Ansible installed...${NORMAL}"
     fi
 
     echo "${BLUE}Running ansible-pull on remote playbook in verbose mode.${NORMAL}"
