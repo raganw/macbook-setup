@@ -1,10 +1,33 @@
 ---
-- hosts: all
+- name: Mac Setup
+  hosts: all
   connection: local
+  # become: true
+  tasks:
+    - name: Install homebrew
+      shell: 'yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+      args:
+        creates: /usr/local/bin/brew
+      tags: install
 
-  vars_files:
-    - config.yml
+    - name: Update homebrew 
+      homebrew:
+        state: latest
+        update_homebrew: yes
+      tags: install, update
 
-  roles:
-    - raganw.homebrew
+    - name: Tap homebrew caskroom/cask
+      homebrew_tap:
+        tap: "homebrew/cask"
+      tags: install, tap
+
+    - name: Install zsh
+      community.general.homebrew:
+        name: zsh
+        state: present
+
+    - name: Install oh-my-zsh
+      shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
+      args:
+        creates: ${HOME}/.oh-my-zsh
 
