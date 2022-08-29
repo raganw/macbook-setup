@@ -32,7 +32,7 @@
     - name: Change shell to zsh
       shell: chsh -s $(which zsh)
       become: true
-      tags: install, sudo, zsh
+      tags: sudo, never
 
     - name: Install oh-my-zsh
       shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
@@ -44,4 +44,15 @@
       ansible.builtin.git:
         repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
         dest: "{{ansible_env.HOME}}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+      tags: install, zsh
+    - name: Install zsh-syntax-highlighting
+      ansible.builtin.git:
+        repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+        dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+      tags: install, zsh
+
+    - name: Install fast-syntax-highlighting
+      ansible.builtin.git:
+        repo: 'https://github.com/zdharma/fast-syntax-highlighting'
+        dest: "~/.oh-my-zsh/custom/plugins/F-Sy-H"
       tags: install, zsh

@@ -47,11 +47,15 @@ function install() {
         echo "${YELLOW}${BOLD}You already have Homebrew installed...${NORMAL}"
     fi
 
-    if [ "$(uname -m)" == "arm64" ]
-    then
+    if [ "$(uname -m)" == "arm64" ]; then
       if [[ :$PATH: != *:"/opt/homebrew/bin":* ]] ; then
         echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
         eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
+    else
+      if [[ :$PATH: != *:"/opt/homebrew/bin":* ]] ; then
+        echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
+        eval "$(/usr/local/bin/brew shellenv)"
       fi
     fi
 
@@ -69,6 +73,9 @@ function install() {
 
     echo "${BLUE}Running ansible-pull on remote playbook in verbose mode.${NORMAL}"
     ansible-pull --ask-become-pass --verbose --url https://github.com/raganw/macbook-setup.git
+
+    echo "${BLUE}Setup repo has been cloned to ~/Developer/macbook-setup${NORMAL}"
+    echo "${BLUE}run "zsh -l" to restart zsh with new config${NORMAL}"
 }
 
 function initialize() {
@@ -110,9 +117,6 @@ function main() {
     exit ${EXIT_VAL}
 }
 
-
-# set a trap for cleanup all before process termination by SIGHUBs
-trap "cleanup; exit 1" 1 2 3 13 15
 
 # call the main executable function
 main "$@"
