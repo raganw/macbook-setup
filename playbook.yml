@@ -11,13 +11,13 @@
       tags: install
 
     - name: Update homebrew 
-      homebrew:
+      community.general.homebrew:
         state: latest
         update_homebrew: yes
       tags: install, update
 
     - name: Tap homebrew caskroom/cask
-      homebrew_tap:
+      community.general.homebrew_tap:
         tap: "homebrew/cask"
       tags: install, tap
 
