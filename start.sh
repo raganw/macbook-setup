@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Script to jumpstart a macbook with ansible 
 
 function uninstall() {
