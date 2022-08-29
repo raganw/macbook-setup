@@ -30,7 +30,7 @@ function install() {
       if [ "$(sudo dseditgroup -o read wheel 2>/dev/null)" ]
       then
           printf "%s\n" "Adding user to wheel group..."
-          sudo dseditgroup -o edit -a username -t "$(whoami)" wheel
+          sudo dseditgroup -o edit -a $(whoami) -t user wheel
           sudo -k
       else
           printf "%s\n" "ERROR: No wheel group found. Exiting." >&2
