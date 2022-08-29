@@ -4,6 +4,12 @@
   connection: local
   # become: true
   tasks:
+    - name: Clone ansible playbook repo
+      git:
+        repo: https://github.com/raganw/macbook-setup.git
+        dest: "{{home}}/Developer/mackbook-setup"
+        clone: yes
+        update: yes
     - name: Update homebrew 
       community.general.homebrew:
         state: latest
