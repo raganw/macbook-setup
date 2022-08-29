@@ -1,15 +1,9 @@
 ---
 - name: Mac Setup
-  hosts: all
+  hosts: localhost
   connection: local
   # become: true
   tasks:
-    - name: Install homebrew
-      shell: 'yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-      args:
-        creates: /usr/local/bin/brew
-      tags: install
-
     - name: Update homebrew 
       community.general.homebrew:
         state: latest
