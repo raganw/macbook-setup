@@ -24,6 +24,17 @@ function install() {
     echo "${BLUE}Installing xcode command line tools...${NORMAL}"
     xcode-select --install
 
+    echo "${BLUE}${BOLD}Enter password for sudo access to add user to 'wheel' group${NORMAL}"
+    if [ "$(sudo dseditgroup -o read wheel 2>/dev/null)" ]
+    then
+        printf "%s\n" "Adding user to wheel group..."
+        sudo dseditgroup -o edit -a username -t "$(whoami)" wheel
+        sudo -k
+    else
+        printf "%s\n" "ERROR: No wheel group found. Exiting." >&2
+        exit 1
+    fi
+
     if ! command -v brew &>/dev/null; then
       echo "${BLUE}Installing Homwebrew, follow the instructions...${NORMAL}"
 
@@ -33,6 +44,14 @@ function install() {
       chmod -R go-w "$(brew --prefix)/share/zsh"
     else
         echo "${YELLOW}${BOLD}You already have Homebrew installed...${NORMAL}"
+    fi
+
+    if [ "$(uname -m)" == "arm64" ]
+    then
+      if [[ :$PATH: != *:"/opt/homebrew/bin":* ]] ; then
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
     fi
 
     if ! command -v ansible $>/dev/null; then
