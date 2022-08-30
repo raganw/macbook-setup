@@ -3,56 +3,20 @@
   hosts: localhost
   connection: local
   # become: true
+  vars_files:
+    - vars/packages.yml
+
   tasks:
     - name: Clone ansible playbook repo
       ansible.builtin.git:
         repo: https://github.com/raganw/macbook-setup.git
-        dest: "{{ansible_env.HOME}}/Developer/macbook-setup"
-        clone: yes
-        update: yes
+        version: main
+        dest: "{{ ansible_env.HOME }}/Developer/macbook-setup"
+        clone: true
+        update: true
       tags: install, update
 
-    - name: Update homebrew 
-      community.general.homebrew:
-        state: latest
-        update_homebrew: yes
-      tags: install, update
 
-    - name: Tap homebrew caskroom/cask
-      community.general.homebrew_tap:
-        tap: "homebrew/cask"
-      tags: install, tap
-
-    - name: Install zsh
-      community.general.homebrew:
-        name: zsh
-        state: present
-      tags: install, zsh
-
-    - name: Change shell to zsh
-      shell: chsh -s $(which zsh)
-      become: true
-      tags: sudo, never
-
-    - name: Install oh-my-zsh
-      shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
-      args:
-        creates: "{{ansible_env.HOME}}/.oh-my-zsh"
-      tags: install, zsh
-
-    - name: Install zsh-autosuggestions
-      ansible.builtin.git:
-        repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
-        dest: "{{ansible_env.HOME}}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-      tags: install, zsh
-    - name: Install zsh-syntax-highlighting
-      ansible.builtin.git:
-        repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
-        dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-      tags: install, zsh
-
-    - name: Install fast-syntax-highlighting
-      ansible.builtin.git:
-        repo: 'https://github.com/zdharma/fast-syntax-highlighting'
-        dest: "~/.oh-my-zsh/custom/plugins/F-Sy-H"
-      tags: install, zsh
+    - include: tasks/homebrew.yml
+    - include: tasks/zsh.yml
+    - include: tasks/packages.yml

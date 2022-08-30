@@ -1,0 +1,10 @@
+- name: Update homebrew
+  community.general.homebrew:
+    state: latest
+    update_homebrew: true
+  tags: install, update
+
+- name: Tap homebrew caskroom/cask
+  community.general.homebrew_tap:
+    tap: "homebrew/cask"
+  tags: install, tap

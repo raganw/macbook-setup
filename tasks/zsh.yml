@@ -1,0 +1,44 @@
+- name: Install zsh
+  community.general.homebrew:
+    name: zsh
+    state: present
+  tags: install, zsh
+
+- name: Get homebrew zsh location
+  ansible.builtin.command: "echo $(brew --prefix)/bin/zsh"
+  register: homebrew_zsh_path
+  changed_when: false
+
+- name: Change shell to zsh
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: "{{ homebrew_zsh_path.stdout }}"
+  become: true
+  tags: sudo, never
+
+- name: Install oh-my-zsh
+  ansible.builtin.shell: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
+  args:
+    creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+  tags: install, zsh
+
+- name: Install zsh-autosuggestions
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    version: master
+  tags: install, zsh
+
+- name: Install zsh-syntax-highlighting
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    version: master
+  tags: install, zsh
+
+- name: Install fast-syntax-highlighting
+  ansible.builtin.git:
+    repo: 'https://github.com/z-shell/F-Sy-H'
+    dest: "~/.oh-my-zsh/custom/plugins/F-Sy-H"
+    version: main
+  tags: install, zsh

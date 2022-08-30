@@ -1,0 +1,4 @@
+brew_packages:
+  - asdf
+  - awscli
+  - bash
