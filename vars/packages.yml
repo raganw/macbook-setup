@@ -88,7 +88,7 @@ brew_packages:
 brew_casks:
   - 1password
   - 1password-cli
-  - adoptopenjdk8
+  - adoptopenjdk/openjdk/adoptopenjdk8
   - alfred
   - aws-vault
   - aws-vpn-client
