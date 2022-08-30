@@ -17,6 +17,6 @@
       tags: install, update
 
 
-    - include: tasks/homebrew.yml
-    - include: tasks/zsh.yml
-    - include: tasks/packages.yml
+    - ansible.builtin.import_tasks: tasks/homebrew.yml
+    - ansible.builtin.import_tasks: tasks/zsh.yml
+    - ansible.builtin.import_tasks: tasks/packages.yml

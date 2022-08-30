@@ -1,6 +1,21 @@
-- name: Install Packages
-  community.general.homebrew:
+- name: Install Homebrew Taps
+  community.general.homebrew_tap:
     name: "{{ item }}"
     state: present
-  tags: install
+  tags: install, homebrew, taps
+  loop: "{{ brew_taps }}"
+
+- name: Install Homebrew Packages
+  community.general.homebrew:
+    name: "{{ item.name | default(item) }}"
+    install_options: "{{ item.install_options | default(omit) }}"
+    state: present
+  tags: install, homebrew, packages
   loop: "{{ brew_packages }}"
+
+- name: Install Homebrew Casks
+  community.general.homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  tags: install, homebrew, casks
+  loop: "{{ brew_casks }}"
