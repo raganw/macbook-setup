@@ -6,6 +6,13 @@
   vars_files:
     - vars/packages.yml
 
+  pre_tasks:
+    - name: Update homebrew
+      community.general.homebrew:
+        state: latest
+        update_homebrew: true
+      tags: install, update
+
   tasks:
     - name: Clone ansible playbook repo
       ansible.builtin.git:

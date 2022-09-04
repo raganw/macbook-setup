@@ -1,3 +1,16 @@
+- name: Install Mas
+  community.general.homebrew:
+    name: mas
+    state: present
+  tags: install, homebrew, packages, mas
+
+- name: Install Xcode
+  community.general.mas:
+    id: "{{ item.id }}"
+    state: present
+  tags: install, xcode, packages, mas
+  loop: "{{ mas_apps }}"
+
 - name: Install Homebrew Taps
   community.general.homebrew_tap:
     name: "{{ item }}"

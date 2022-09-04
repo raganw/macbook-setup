@@ -134,3 +134,11 @@ brew_taps:
   - progrium/taps
   - supabase/tap
   - thoughtbot/formulae
+
+mas_apps:
+  - { name: "Yubico Authenticator", id: 1497506650 }
+  - { name: "Twitterrific", id: 1289378661 }
+  - { name: "Dark Noise", id: 1465439395 }
+  - { name: "Xcode", id: 497799835 }
+  - { name: "Reeder", id: 1529448980 }
+  - { name: "Pixelmator", id: 407963104 }
