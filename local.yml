@@ -27,3 +27,4 @@
     - ansible.builtin.import_tasks: tasks/homebrew.yml
     - ansible.builtin.import_tasks: tasks/zsh.yml
     - ansible.builtin.import_tasks: tasks/packages.yml
+    - ansible.builtin.import_tasks: tasks/gpg.yml

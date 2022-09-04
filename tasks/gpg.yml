@@ -1,0 +1,57 @@
+- name: Import GPG keys
+  tags:
+    - never
+    - gpg
+
+  always:
+    - name: Cleanup temporary directory
+      ansible.builtin.file:
+        path: "{{ gpg_import_directory.path }}"
+        state: absent
+      when: gpg_import_directory.path is defined
+
+  block:
+    - name: Create import directory
+      ansible.builtin.tempfile:
+        prefix: "gpg-import"
+        state: directory
+      register: gpg_import_directory
+
+    - name: Copy files
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ gpg_import_directory.path }}"
+        mode: "0600"
+      loop:
+        - "../gpg/github.pub.key"
+        - "../gpg/BB39246438F97576.pub.key"
+        - "../gpg/trust.txt"
+      when: gpg_import_directory.path is defined
+    - name: Ensure GPG config exists
+      ansible.builtin.command: "gpg --list-keys"
+      args:
+        creates: "{{ ansible_env.HOME }}/.gnupg"
+
+    - name: Check for public key
+      ansible.builtin.command: "gpg --list-keys BB39246438F97576"
+      register: gpg_public_key
+      changed_when: false
+      ignore_errors: true
+
+    - name: Import public key
+      ansible.builtin.command: "gpg --import {{ gpg_import_directory.path }}/BB39246438F97576.pub.key"
+      when: gpg_public_key is failed
+
+    - name: Check for Github public key
+      ansible.builtin.command: "gpg --list-keys github"
+      register: gpg_github_key
+      changed_when: false
+      ignore_errors: true
+
+    - name: Import Github public key
+      ansible.builtin.command: "gpg --import {{ gpg_import_directory.path }}/github.pub.key"
+      when: gpg_github_key is failed
+
+    - name: Import key trust
+      ansible.builtin.command: "gpg --import-ownertrust {{ gpg_import_directory.path }}/trust.txt"
+      changed_when: false
