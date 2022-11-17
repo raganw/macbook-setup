@@ -122,7 +122,6 @@ brew_casks:
   - slack
   - stats
   - steam
-  - twitch
   - zoom
 
 brew_taps:
