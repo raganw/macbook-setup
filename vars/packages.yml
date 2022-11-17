@@ -33,12 +33,14 @@ brew_packages:
   - go-jira
   - gobject-introspection
   - grpc
+  - gum
   - harfbuzz
   - hub
   - imagemagick
   - ios-deploy
   - jq
   - krb5
+  - koekeishiya/formulae/yabai
   - libass
   - libheif
   - libtool
@@ -50,6 +52,7 @@ brew_packages:
   - ninja
   - node
   - nss
+  - openssl@3
   - pass
   - pass-otp
   - pinentry-mac
@@ -66,6 +69,7 @@ brew_packages:
   - ruby-build
   - rust-analyzer
   - scrcpy
+  - sd
   - shared-mime-info
   - starship
   - supabase/tap/supabase
@@ -106,11 +110,13 @@ brew_casks:
   - google-chrome
   - hammerspoon
   - iterm2
-  - jetbrains-toolbox
+  # - jetbrains-toolbox
+  - karabiner-elements
   - keybase
   - logitech-g-hub
   - macfuse
   - moom
+  - music-bar
   - nvidia-geforce-now
   - react-native-debugger
   - slack
@@ -130,6 +136,7 @@ brew_taps:
   - homebrew/cask-versions
   - homebrew/core
   - homebrew/services
+  - koekeishiya/formulae
   - planetscale/tap
   - progrium/taps
   - supabase/tap
