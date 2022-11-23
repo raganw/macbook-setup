@@ -1,0 +1,21 @@
+asdf_home: "{{ ansible_env.HOME }}"
+asdf_dir: "{{ asdf_home }}/.asdf"
+asdf_plugins:
+  - name: golang
+    versions:
+      - "1.19"
+  - name: python
+    versions:
+      - 3.8.14
+  - name: pnpm
+    versions:
+      - 7.12.2
+  - name: ruby
+    versions:
+      - 2.6.8
+  - name: nodejs
+    versions:
+      - 16.18.1
+  - name: yarn
+    versions:
+      - 1.22.19

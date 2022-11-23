@@ -5,6 +5,7 @@
   # become: true
   vars_files:
     - vars/packages.yml
+    - vars/asdf.yml
 
   pre_tasks:
     - name: Update homebrew
@@ -28,3 +29,4 @@
     - ansible.builtin.import_tasks: tasks/zsh.yml
     - ansible.builtin.import_tasks: tasks/packages.yml
     - ansible.builtin.import_tasks: tasks/gpg.yml
+    - ansible.builtin.import_tasks: tasks/asdf.yml
